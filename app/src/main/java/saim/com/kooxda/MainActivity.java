@@ -2,6 +2,7 @@ package saim.com.kooxda;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -41,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
         int scale = (int) (112 * mWebView.getScale());
         mWebView.setInitialScale(scale);
 
-        renderWebPage("http://www.kooxda.com/");
+        renderWebPage("http://www.kooxda.com");
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                renderWebPage("http://www.kooxda.com/");
+                renderWebPage("http://www.kooxda.com");
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -67,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                 layoutProgressText.setText(newProgress + "%");
                 mWebView.setEnabled(false);
                 if (newProgress == 100) {
-                    //progressDialog.dismiss();
                     mWebView.setEnabled(true);
                     layoutProgress.setVisibility(View.GONE);
                 }
@@ -78,10 +79,19 @@ public class MainActivity extends AppCompatActivity {
         mWebView.loadUrl(urlToRender);
     }
 
+
     private class MyBrowser extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                view.loadUrl(String.valueOf(request.getUrl()));
+            }
             return true;
         }
 
