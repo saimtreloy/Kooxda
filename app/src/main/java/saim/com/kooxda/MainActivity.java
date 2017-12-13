@@ -1,5 +1,6 @@
 package saim.com.kooxda;
 
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -63,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void renderWebPage(String urlToRender){
+        mWebView.getSettings().setLoadsImagesAutomatically(true);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setAllowFileAccess(true);
+        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+
         mWebView.setWebViewClient(new MyBrowser());
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int newProgress) {
@@ -74,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        mWebView.getSettings().setLoadsImagesAutomatically(true);
-        mWebView.getSettings().setJavaScriptEnabled(true);
+
         mWebView.loadUrl(urlToRender);
     }
 
@@ -83,15 +89,16 @@ public class MainActivity extends AppCompatActivity {
     private class MyBrowser extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.d("SAIM ANDROID M", url);
             view.loadUrl(url);
             return true;
         }
 
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                view.loadUrl(String.valueOf(request.getUrl()));
-            }
+            Log.d("SAIM ANDROID N", request.getUrl().toString());
+            view.loadUrl(String.valueOf(request.getUrl()));
             return true;
         }
 

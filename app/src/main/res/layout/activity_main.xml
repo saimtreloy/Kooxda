@@ -74,18 +74,28 @@
 
     <LinearLayout
         android:id="@+id/layoutProgress"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerInParent="true"
-        android:background="@drawable/ic_round"
+        android:layout_below="@id/toolbar"
         android:gravity="center">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleY="4"
+                android:layout_marginTop="-8dp"
+                android:indeterminateOnly="true"/>
+
+        </FrameLayout>
+
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -94,6 +104,7 @@
             android:text="Please wait kooxda is loading..."
             android:textSize="8dp"
             android:textStyle="italic"
+            android:visibility="gone"
             android:gravity="center"
             android:textColor="@android:color/white"/>
 
@@ -103,6 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="20%"
+            android:visibility="gone"
             android:textStyle="bold"
             android:textSize="10dp"
             android:textColor="@android:color/white"/>
